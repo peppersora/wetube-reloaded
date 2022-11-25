@@ -1,0 +1,4 @@
+{
+    "presets": ["@babel/preset-env"]
+    // preset은 babel을 위한 가장 큰 플러그인
+  }
