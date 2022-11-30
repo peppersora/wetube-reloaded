@@ -13,6 +13,9 @@ const app = express();
 다시말해 서버는 사용자의 request에대해 listening을 하고 response하고 있다..!
 */
 const logger = morgan("dev");
+
+app.set("view engine", "pug");
+app.set("views", process.cwd() + "/views");
 app.use(logger);
 
 app.use("/",globalRouter);
