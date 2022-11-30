@@ -1,0 +1,15 @@
+doctype html 
+html(lang="ko")
+    head   
+        title #{pageTitle} | Wetube
+        link(rel="stylesheet" href="https://unpkg.com/mvp.css@1.12/mvp.css") 
+    body
+        header
+            h1=pageTitle 
+        main
+            block content
+    include partials/footer
+
+     //- head나 content block을 만드는 것은
+    //- 다른 pug 파일들이 내용을 채워넣을 공간을 마련하는이유이다.
+    
