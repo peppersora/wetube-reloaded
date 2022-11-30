@@ -41,7 +41,11 @@ export const watch =(req,res) => {
 };
 //  render() 메소드에 들어갈 내용과 pug의 파일명이 같아야함
 //  파일명에 띄어쓰기가 들어가있으면 절대 안되고, 무조건 소문자로쓸것!
-export const edit = (req,res) => res.render("edit");
+export const edit = (req,res) => {
+  const id = req.params.id;
+  const video=videos[id-1];
+  return res.render("edit",{pageTitle: `Editing ${video.title}`})
+};
     
 export const search = (req,res) => res.send("Search");
 export const upload = (req, res) => res.send("Upload");
