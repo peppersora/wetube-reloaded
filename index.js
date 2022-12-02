@@ -1,4 +1,4 @@
-import express from "express";
+import express, { urlencoded } from "express";
 import morgan from "morgan";
 import globalRouter from "./routers/globalRouter";
 import videoRouter from "./routers/videoRouter";
@@ -17,7 +17,7 @@ const logger = morgan("dev");
 app.set("view engine", "pug");
 app.set("views", process.cwd() + "/views");
 app.use(logger);
-
+app.use(express,urlencoded({extended:true}));
 app.use("/",globalRouter);
 app.use("/videos",videoRouter);
 app.use("/users",userRouter);
