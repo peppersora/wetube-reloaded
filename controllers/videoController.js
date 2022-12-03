@@ -27,7 +27,7 @@ let videos = [
 ];
 
 export const trending = (req,res) => {
-  
+  // const {id} = req.params;
   return res.render("home",{pageTitle:"Home",videos});
 };
 
@@ -61,13 +61,13 @@ export const postEdit = (req,res) => {
   // redirect는 브라우저가 자동으로 이동하는것
 };  
 // ============= practice ======
-export const getUpload = (req,res) => {
-  return res.render("upload");
-};
+// export const getUpload = (req,res) => {
+//   return res.render("upload");
+// };
 
-export const postUpload = (req,res) => {
-  // here we will add a video to the videos array.
-  return res.redirect("/");
+// export const postUpload = (req,res) => {
+//   // here we will add a video to the videos array.
+//   return res.redirect("/");
 
-};
+// };
 
