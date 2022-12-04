@@ -1,10 +1,31 @@
 import Video from "../models/Video";
-
-export const home = (req,res) => {
-  Video.find({},(error,videos) =>{
+/* 1. callback 방식
+console.log("start");
+Video.find({},(error,videos) =>{
+  if(error){
+    return res.render("server-error")
+  }
     return res.render("home",{pageTitle:"Home", videos});
-  
-  });
+});
+  console.log("finished!");
+*/
+// 2. promise 방식
+export const home = async (req,res) => {
+  try{
+    console.log("Start")
+    const videos = await Video.find({});
+    console.log(videos);
+    console.log("finished")
+    return res.render("home",{pageTitle:"Home", videos});
+
+  }catch(error){
+    return res.render("server-error",{error});
+  }
+  /* js가 위에서 아래로 단지 읽었다면, 
+    await을 사용하면 기다려준다. => 언제까지?
+    database에게 결과값을 받을 때까지...
+    async와 await은 callback보다 최신기술로
+    최대 장점은 직관적이라는것..!*/
 };
 
 export const watch =(req,res) => {
