@@ -1,4 +1,4 @@
-import "./db";
+
 import express, { urlencoded } from "express";
 import morgan from "morgan";
 import globalRouter from "./routers/globalRouter";
@@ -6,7 +6,6 @@ import videoRouter from "./routers/videoRouter";
 import userRouter from "./routers/userRouter";
 //"express"라는 이름의 package를 express라는 이름으로 import해왔다는 뜻
 // "morgan"이라는 이름의 package를 logger라는 이름으로 import해왔다는 뜻
-const PORT = 4000;
 
 const app = express();
 /*서버는 24시간 내내 온라인에 연결된 컴퓨터라고 할 수 있다. 
@@ -23,8 +22,5 @@ app.use("/",globalRouter);
 app.use("/videos",videoRouter);
 app.use("/users",userRouter);
 
+export default app;
 
-const handleListening = () =>
- console.log(`Server listening on port http://localhost:${PORT}`);
-
-app.listen(PORT,handleListening);
