@@ -11,16 +11,10 @@ Video.find({},(error,videos) =>{
 */
 // 2. promise 방식
 export const home = async (req,res) => {
-  try{
-    console.log("Start")
+  
     const videos = await Video.find({});
-    console.log(videos);
-    console.log("finished")
+    
     return res.render("home",{pageTitle:"Home", videos});
-
-  }catch(error){
-    return res.render("server-error",{error});
-  }
   /* js가 위에서 아래로 단지 읽었다면, 
     await을 사용하면 기다려준다. => 언제까지?
     database에게 결과값을 받을 때까지...
@@ -52,7 +46,17 @@ export const getUpload = (req,res) => {
 
 export const postUpload = (req,res) => {
   // here we will add a video to the videos array.
-  const {title} = req.body;
+  const {title, description,hashtags} = req.body;
+  const video = new Video({
+    title,
+    description,
+    createdAt: Date.now(),
+    hashtags:hashtags.split(",").map((word) =>`#${word}`),
+    meta:{
+      views:0,
+      rating:0,
+    },
+  }) 
   return res.redirect("/");
 };
 
