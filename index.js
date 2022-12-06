@@ -1,4 +1,3 @@
-
 import express, { urlencoded } from "express";
 import morgan from "morgan";
 import globalRouter from "./routers/globalRouter";
@@ -14,13 +13,13 @@ const app = express();
 */
 const logger = morgan("dev");
 
-app.set("view engine", "pug");
+app.set("view engine","pug");
+// pug를 view engine으로 설정을해야 html을 가져올수 있다.
 app.set("views", process.cwd() + "/views");
 app.use(logger);
-app.use(express,urlencoded({extended:true}));
+app.use(express.urlencoded({extended:true}));
 app.use("/",globalRouter);
 app.use("/videos",videoRouter);
 app.use("/users",userRouter);
-
 export default app;
 

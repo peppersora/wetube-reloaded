@@ -30,3 +30,12 @@ function Colorhandler(){
     
     }
     button.addEventListener("click",Colorhandler);
+
+
+    const fs = require('fs');
+    const inputData = fs.readFileSync(0,'utf-8').toString.split('');
+
+    const A = parseInt(inputData[0]);
+    const B = parseIng(inputData[1]);
+
+    console.log(A/B);

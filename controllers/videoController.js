@@ -13,7 +13,6 @@ Video.find({},(error,videos) =>{
 export const home = async (req,res) => {
   
     const videos = await Video.find({});
-    
     return res.render("home",{pageTitle:"Home", videos});
   /* js가 위에서 아래로 단지 읽었다면, 
     await을 사용하면 기다려준다. => 언제까지?
@@ -44,19 +43,23 @@ export const getUpload = (req,res) => {
   return res.render("upload",{pageTitle:"Upload Video"});
 };
 
-export const postUpload = (req,res) => {
+export const postUpload = async (req,res) => {
   // here we will add a video to the videos array.
   const {title, description,hashtags} = req.body;
   const video = new Video({
     title,
-    description,
+    description: description,
     createdAt: Date.now(),
     hashtags:hashtags.split(",").map((word) =>`#${word}`),
     meta:{
       views:0,
       rating:0,
     },
-  }) 
+  });
+  const dbVideo = await video.save();
+  // save는 promise를 return하고 이걸 await하면 우리 document가 return된다.
+  // database에 파일이 저장되는것을 기다리게하기 위해 async+await을 추가
+  console.log(dbVideo);
   return res.redirect("/");
 };
 
