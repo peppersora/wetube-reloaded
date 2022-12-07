@@ -5,13 +5,13 @@ import mongoose from "mongoose";
 //2. model의 형태를 정의해주기 => 보통 schema라고 알려져있음
 // 우선은 데이터 형식만을 schema에 적는다.
 const VideoSchema = new mongoose.Schema({
-    title: String,
-    description: String,
-    createdAt: Date,
-    hashtags:[{type: String}],
+    title: {type: String, required: true, trim:true, maxLength:80},
+    description:{ type: String, required: true, trim:true, minLength:10},
+    createdAt:{ type: Date, required:true, default: Date.now},
+    hashtags:[{type: String, trim:true}],
     meta: {
-        views:Number,
-        rating:Number,
+        views:{type:Number,default:0,required: true},
+        rating:{type:Number,default:0,required: true},
     }
 });
 

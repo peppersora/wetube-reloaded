@@ -53,20 +53,25 @@ export const postUpload = async (req,res) => {
   const {title, description, hashtags} = req.body;
   // 이제 document를 만들어야하는데 document는 데이터를 가진 비디오
   // 그후에 document를 db에 저장!
+  try{
   await Video.create({
     title,
     description,
-    createdAt:" lalalal",
-    hashtags:hashtags.split(",").map((word) =>`#${word}`),
-    meta:{
-      views:0,
-      rating:0,
-    },
+    hashtags:hashtags.split(",").map((word) =>`#${word}`)
+   
   });
  
   // save는 promise를 return하고 이걸 await하면 우리 document가 return된다.
   // database에 파일이 저장되는것을 기다리게하기 위해 async+await을 추가
   
   return res.redirect("/");
+} catch(error){
+  
+  return res.render("upload",{
+    pageTitle:"Upload Video",
+    errorMassage: error._message,
+    });
+  }
 };
+
 
