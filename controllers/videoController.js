@@ -26,15 +26,26 @@ export const home = async (req,res) => {
 
 };
 
-export const watch =(req,res) => {
+export const watch = async (req,res) => {
   // console.log(req.params);
   const {id} = req.params;
-  return res.render("watch",{pageTitle:`Watching`});
+  //id가 req.params에서 오는것 정말정말 중요!!
+  //req.param => router가 주는 express기능
+  const video = await Video.findById(id);
+  if(!video){
+    return res.render("404",{pageTitle:"video not found."});
+  }
+  return res.render("watch",{pageTitle: video.title, video});
 };
-export const getEdit = (req,res) => {
+export const getEdit = async (req,res) => {
   // form을 화면에 보여주는 애
   const {id} = req.params;
-  return res.render("edit",{pageTitle:`Editing`});
+  const video = await Video.findById(id);
+  if(!video){
+    // error를 먼저 체크할것
+    return res.render("404",{pageTitle:"video not found."});
+  }
+  return res.render("edit",{pageTitle:`Edit: ${video.title}`, video});
 };
 export const postEdit = (req,res) => {
   // post는 변경사항을 저장해주는애
