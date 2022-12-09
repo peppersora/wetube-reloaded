@@ -53,16 +53,18 @@ export const postEdit = async (req,res) => {
   // post는 변경사항을 저장해주는애
   const {id} = req.params;
   const {title,description, hashtags} = req.body;
-  const video = await Video.findById(id);
+  const video = await Video.exists({_id: id});
+  // exists는 filter를 필요로 한다.
   if(!video){
     return res.render("404",{pageTitle:"video not found."});
   }
-  video.title = title;
-  video.description = description;
-  video.hashtags = hashtags
-  .split(",")
-  .map((word) => (word.startsWith("#") ? word : `#${word}`));
-  await video.save();
+  await Video.findByIdAndUpdate(id, {
+    title,
+    description,
+    hashtags: hashtags
+    .split(",")
+    .map((word) => (word.startsWith("#") ? word : `#${word}`)),
+  });
   return res.redirect(`/videos/${id}`);
   // redirect는 브라우저가 자동으로 이동하는것
 };  
@@ -80,7 +82,7 @@ export const postUpload = async (req,res) => {
   await Video.create({
     title,
     description,
-    hashtags:hashtags.split(",").map((word) =>`#${word}`)
+    hashtags,
    
   });
  
