@@ -5,9 +5,6 @@ import mongoose from "mongoose";
 //2. model의 형태를 정의해주기 => 보통 schema라고 알려져있음
 // 우선은 데이터 형식만을 schema에 적는다.
 
-export const formathashtags = (hashtags) =>
-hashtags.split(",").map((word) => (word.startsWith("#") ? word : `#${word}`));
-
 const VideoSchema = new mongoose.Schema({
     title: {type: String, required: true, trim:true, maxLength:80},
     description:{ type: String, required: true, trim:true, minLength:10},
@@ -18,6 +15,11 @@ const VideoSchema = new mongoose.Schema({
         rating:{type:Number,default:0,required: true},
     }
 });
+
+VideoSchema.static("formathashtags",function(hashtags){
+    return hashtags.split(",").map((word) => (word.startsWith("#") ? word : `#${word}`))
+});
+
 
 
 const Video = mongoose.model("Video", VideoSchema);

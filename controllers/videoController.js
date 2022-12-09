@@ -1,4 +1,4 @@
-import Video, { formathashtags } from "../models/Video";
+import Video from "../models/Video";
 
 /* 1. callback 방식
 console.log("start");
@@ -61,7 +61,7 @@ export const postEdit = async (req,res) => {
   await Video.findByIdAndUpdate(id, {
     title,
     description,
-    hashtags:formathashtags(hashtags),
+    hashtags:Video.formathashtags(hashtags),
   });
   return res.redirect(`/videos/${id}`);
   // redirect는 브라우저가 자동으로 이동하는것
@@ -80,7 +80,7 @@ export const postUpload = async (req,res) => {
   await Video.create({
     title,
     description,
-    hashtags:formathashtags(hashtags),
+    hashtags:Video.formathashtags(hashtags),
    
   });
  
