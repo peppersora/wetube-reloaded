@@ -1,7 +1,12 @@
 import express from "express";
 import { edit } from "../controllers/userController";
 import {
-    watch,getEdit,postEdit, getUpload, postUpload  
+    watch,
+    getEdit,
+    postEdit, 
+    getUpload, 
+    postUpload,
+    deleteVideo  
 } 
     from "../controllers/videoController";
 
@@ -10,6 +15,7 @@ const videoRouter = express.Router();
     정규식 표현을 다시 작성해줘야함*/
 videoRouter.get("/:id([0-9a-f]{24})",watch);
 videoRouter.route("/:id([0-9a-f]{24})/edit").get(getEdit).post(postEdit);
+videoRouter.route("/:id([0-9a-f]{24})/delete").get(deleteVideo);
 videoRouter.route("/upload").get(getUpload).post(postUpload);
 // 아래두줄을 위의 한줄로 정리 
 // videoRouter.get("/:id(\\d+)/edit",getEdit);
