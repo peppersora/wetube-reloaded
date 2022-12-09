@@ -15,7 +15,7 @@ Video.find({},(error,videos) =>{
 // 2. promise 방식
 export const home = async (req,res) => {
   
-    const videos = await Video.find({});
+    const videos = await Video.find({}).sort({createdAt:"desc"});
     console.log(videos);
     return res.render("home",{pageTitle:"Home", videos});
     // return을 사용하는 진짜 이유는 function을 종료시켜주기때문
@@ -104,3 +104,13 @@ export const deleteVideo = async(req,res) => {
   return res.redirect("/");
 }
 
+export const search = async (req,res) => {
+  const {keyword} = req.query;
+  let videos =[];
+  if(keyword){
+   videos =await Video.find({
+    title: keyword,
+   });
+  }
+  return res.render("search",{pageTitle:"Search",videos});
+}
