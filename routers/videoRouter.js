@@ -1,7 +1,7 @@
 import express from "express";
+import { edit } from "../controllers/userController";
 import {
-    watch,getEdit,postEdit, getUpload, postUpload
-    
+    watch,getEdit,postEdit, getUpload, postUpload  
 } 
     from "../controllers/videoController";
 

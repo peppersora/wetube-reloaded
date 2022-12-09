@@ -1,4 +1,5 @@
 import Video from "../models/Video";
+// import videoRouter from "../routers/videoRouter";
 /* 1. callback 방식
 console.log("start");
 Video.find({},(error,videos) =>{
@@ -37,6 +38,7 @@ export const watch = async (req,res) => {
   }
   return res.render("watch",{pageTitle: video.title, video});
 };
+
 export const getEdit = async (req,res) => {
   // form을 화면에 보여주는 애
   const {id} = req.params;
@@ -47,10 +49,20 @@ export const getEdit = async (req,res) => {
   }
   return res.render("edit",{pageTitle:`Edit: ${video.title}`, video});
 };
-export const postEdit = (req,res) => {
+export const postEdit = async (req,res) => {
   // post는 변경사항을 저장해주는애
   const {id} = req.params;
-  const {title} = req.body;
+  const {title,description, hashtags} = req.body;
+  const video = await Video.findById(id);
+  if(!video){
+    return res.render("404",{pageTitle:"video not found."});
+  }
+  video.title = title;
+  video.description = description;
+  video.hashtags = hashtags
+  .split(",")
+  .map((word) => (word.startsWith("#") ? word : `#${word}`));
+  await video.save();
   return res.redirect(`/videos/${id}`);
   // redirect는 브라우저가 자동으로 이동하는것
 };  
