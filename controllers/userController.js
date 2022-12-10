@@ -5,7 +5,7 @@ export const postJoin = async (req,res) =>{
     const {name, username, email, password,password2, location } = req.body;
     const pageTitle = "Join";
     if(password !== password2){
-        return res.render("join",{
+        return res.status(400).render("join",{
             pageTitle,
             errorMessage: "Password confirmation does not match.",
         });
@@ -17,7 +17,7 @@ export const postJoin = async (req,res) =>{
         충족하는 문서를 선택한다.
         여러조건에 하나만 해당되도 찾을 수 있기때문에 유용!*/
     if(exists){
-        return res.render("join",{
+        return res.status(400).render("join",{
         pageTitle ,
         errorMessage: "This username/email is already taken.",
         })
