@@ -1,7 +1,9 @@
 // 모든걸 초기화시켜주는 파일, 앞으로 import 할일이 많음!
 import "./db";
 import "./models/Video";
+import "./models/User";
 import app from "./index";
+
 
 const PORT = 4000;
 
