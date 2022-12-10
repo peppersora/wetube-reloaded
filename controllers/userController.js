@@ -2,8 +2,15 @@ import User from "../models/User";
 export const getJoin = (req, res) => res.render("join",{pageTitle: "Join"});
 export const postJoin = async (req,res) =>{
     console.log(req.body);
-    const {name, username, email, password, location } = req.body;
+    const {name, username, email, password,password2, location } = req.body;
     const pageTitle = "Join";
+    if(password !== password2){
+        return res.render("join",{
+            pageTitle,
+            errorMessage: "Password confirmation does not match.",
+        });
+    }
+
     const exists = await User.exists({ $or: [{ username },{ email }] });
     /* $or연산자를 사용하는 이유는 둘 이상의 조건에대해
         논리적 or 연산을 수행하고 조건 중 하나 이상을 
