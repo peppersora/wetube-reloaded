@@ -4,18 +4,18 @@ export const postJoin = async (req,res) =>{
     console.log(req.body);
     const {name, username, email, password, location } = req.body;
     const pageTitle = "Join";
-    const usernameExists = await User.exists({username});
-    if(usernameExists){
+    const exists = await User.exists({ $or: [{ username },{ email }] });
+    /* $or연산자를 사용하는 이유는 둘 이상의 조건에대해
+        논리적 or 연산을 수행하고 조건 중 하나 이상을 
+        충족하는 문서를 선택한다.
+        여러조건에 하나만 해당되도 찾을 수 있기때문에 유용!*/
+    if(exists){
         return res.render("join",{
         pageTitle ,
-        errorMessage: "This username is already taken.",})
+        errorMessage: "This username/email is already taken.",
+        })
     }
-    const emailExists = await User.exists({email});
-    if(emailExists){
-        return res.render("join",{
-            pageTitle,
-            errorMessage:"This email is already taken.",})
-    }
+   
     await User.create({
         name,
         username, 
