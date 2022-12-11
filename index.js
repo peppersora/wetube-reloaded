@@ -22,22 +22,15 @@ app.set("views", process.cwd() + "/views");
 app.use(logger);
 app.use(express.urlencoded({extended:true}));
 // session Middleware
-// 백엔드가 기억하고 있는 모든 사용자들은 이제 필요없기때문에 삭제
 app.use(
     session({
         secret: "Hello",
         resave:true,
         saveUninitialized: true,
-
+        
     })
-);
-
-app.use((req,res,next) => {
-    req.sessionStore.all((error,sessions) =>{
-        console.log(sessions);
-        next();
-    });
-});
+    );
+    
 // locals Middleware
 app.use(localsMiddleware);
 app.use("/",rootRouter);

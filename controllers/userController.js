@@ -62,6 +62,7 @@ export const postLogin = async (req,res) => {
  }
     req.session.loggedIn = true;
     req.session.user = user;
+    req.session.siteName = "Wetube";
     return res.redirect("/");
 };
 export const edit = (req, res) => res.send("Edit User");
