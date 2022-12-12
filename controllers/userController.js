@@ -62,6 +62,8 @@ export const postLogin = async (req,res) => {
  }
     req.session.loggedIn = true;
     req.session.user = user;
+    // 세션을 수정할때만 세션을 db에 저장하고 쿠키를 넘겨줌
+    // => 다시말해 로그인한 유저에게만 쿠키를 줌
     req.session.siteName = "Wetube";
     return res.redirect("/");
 };

@@ -1,4 +1,3 @@
-
 import express, { urlencoded } from "express";
 import morgan from "morgan";
 import session from "express-session";
@@ -23,13 +22,22 @@ app.set("views", process.cwd() + "/views");
 app.use(logger);
 app.use(express.urlencoded({extended:true}));
 // session Middleware
+console.log(process.env.COOKIE_SECRET);
 app.use(
     session({
-        secret: "Hello",
-        resave:true,
-        saveUninitialized: true,
+        secret: process.env.COOKIE_SECRET,
+        // secret에 씌여진 string을 가지고 쿠키를 sign하고, 우리가 만든것임을 증명할 수 있기 때문
+        // 쿠키는 domain에 있는 백엔드로만 전송된다.
+        resave:false,
+        saveUninitialized: false,
+        // 세션이 새로 만들어지고, 수정된 적이 없을때 Uninitialized
+        // cookie: {
+        //     maxAge:20000,
+        //     //쿠키가 얼마나 오래 있을 수 있는지 알려줌
+        // },
         // session을 db와 연결해줌
-        store: MongoStore.create({ mongoUrl :"mongodb://127.0.0.1:27017/wetube"}),
+        store: MongoStore.create({
+            mongoUrl: process.env.DB_URL}),
         
     })
     );
