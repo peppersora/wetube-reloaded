@@ -2,6 +2,7 @@
 import express, { urlencoded } from "express";
 import morgan from "morgan";
 import session from "express-session";
+import MongoStore from "connect-mongo";
 import rootRouter from "./routers/rootRouter";
 import videoRouter from "./routers/videoRouter";
 import userRouter from "./routers/userRouter";
@@ -27,6 +28,8 @@ app.use(
         secret: "Hello",
         resave:true,
         saveUninitialized: true,
+        // session을 db와 연결해줌
+        store: MongoStore.create({ mongoUrl :"mongodb://127.0.0.1:27017/wetube"}),
         
     })
     );
