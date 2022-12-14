@@ -129,6 +129,7 @@ export const finishGithubLogin = async (req,res) => {
         if(!user){
              user = await User.create({
                 // 새로 만든 user를 return
+                avatarUrl: userData.avatar_url,
                 name: userData.name,
                 username: userData.login,
                 email: emailObj.email,
