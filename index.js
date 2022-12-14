@@ -5,7 +5,7 @@ import MongoStore from "connect-mongo";
 import rootRouter from "./routers/rootRouter";
 import videoRouter from "./routers/videoRouter";
 import userRouter from "./routers/userRouter";
-import { localsMiddleware } from "./middlewares";
+import { localsMiddleware, protectorMiddleware, publicOnlyMiddleware } from "./middlewares";
 //"express"라는 이름의 package를 express라는 이름으로 import해왔다는 뜻
 // "morgan"이라는 이름의 package를 logger라는 이름으로 import해왔다는 뜻
 
