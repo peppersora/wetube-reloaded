@@ -54,7 +54,7 @@ export const postLogin = async (req,res) => {
         errorMessage: "An account with this username does not exists.",
     });
     }
-    const ok = await bcrypt.compare(password, user.password);
+    const ok = bcrypt.compare(password, user.password);
     if(!ok){
     return res.status(400).render("login",{
     pageTitle,
@@ -119,13 +119,28 @@ export const finishGithubLogin = async (req,res) => {
             },
             })
         ).json();
-        const email = emailData.find(
+        const emailObj = emailData.find(
             (email) => email.primary == true && email.verified == true
         );
-        if(!email){
+        if(!emailObj){
             return res.redirect("/login");
         }
-
+        let user = await User.findOne({email: emailObj.email});
+        if(!user){
+             user = await User.create({
+                // 새로 만든 user를 return
+                name: userData.name,
+                username: userData.login,
+                email: emailObj.email,
+                password: "",
+                socialOnly: true,
+                location: userData.location,
+            });
+        }
+        req.session.loggedIn = true;
+        req.session.user = user;
+        return res.redirect("/");
+        
     }else{
         return res.redirect("/login");
     };

@@ -7,9 +7,11 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true},
+    socialOnly: { type: Boolean, default: false},
+    // socialOnly는 해당 계정을 password로 로그인할수 없다는것을알려주려 사용
     username: { type: String, required: true, unique: true},
-    password: { type: String, required: true},
-    name: { type: String, required: true},
+    password: { type: String, required: false},
+    name: { type: String},
     location: String,
 });
 
