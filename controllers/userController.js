@@ -162,9 +162,10 @@ export const postEdit = async (req, res) => {
             user: { _id,},
         },
         body :{ name, email, username, location },
+        file
     } = req;
     //req 끝
-    
+    console.log(file);
     // email 확인
     const pageTitle = "Edit Profile";
 
@@ -190,7 +191,7 @@ export const postEdit = async (req, res) => {
             });
        }
     }
-  
+    
     // update한 경우
     const updateUser = await User.findByIdAndUpdate( 
         _id , 
