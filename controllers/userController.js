@@ -2,18 +2,20 @@ import User from "../models/User";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
 import { application } from "express";
+import session from "express-session";
 export const getJoin = (req, res) => res.render("join",{pageTitle: "Join"});
 export const postJoin = async (req,res) =>{
     console.log(req.body);
     const {name, username, email, password,password2, location } = req.body;
     const pageTitle = "Join";
+    // password 확인코드
     if(password !== password2){
         return res.status(400).render("join",{
             pageTitle,
             errorMessage: "Password confirmation does not match.",
         });
-    }
-
+    }//if문 끝
+    // username, email 존재여부
     const exists = await User.exists({ $or: [{ username },{ email }] });
     /* $or연산자를 사용하는 이유는 둘 이상의 조건에대해
         논리적 or 연산을 수행하고 조건 중 하나 이상을 
@@ -39,7 +41,7 @@ export const postJoin = async (req,res) =>{
             pageTitle: "Upload Video",
             errorMessage: "error.message,"
         })};//db에서 에러를 방지하기 위해 try-catch 사용
-};
+}; //postJoin문 끝
 export const getLogin = (req, res) =>
     res.render("login",{pageTitle: "Login"});
 
@@ -154,12 +156,42 @@ export const getEdit = (req, res) => {
     return res.render("edit-profile",{pageTitle:"Edit Profile"});
 };
 export const postEdit = async (req, res) => {
+
     const {
         session:{
-            user: { _id },
+            user: { _id,},
         },
         body :{ name, email, username, location },
     } = req;
+    //req 끝
+    
+    // email 확인
+    const pageTitle = "Edit Profile";
+
+        if(req.session.user.email!==req.body.email){
+        const exists = await User.exists({email})
+        if(exists){
+            return res.status(400).render("edit-profile",{
+                pageTitle,
+                errorMessage:  "This email is already taken.",
+            });
+
+        }
+    }
+  
+    // username 확인
+    if(req.session.user.username!==req.body.username){
+        const exists = await User.exists({username})
+        if(exists){
+            
+            return res.status(400).render("edit-profile",{
+                pageTitle,
+                errorMessage:  "This username is already taken.",
+            });
+       }
+    }
+  
+    // update한 경우
     const updateUser = await User.findByIdAndUpdate( 
         _id , 
         {
@@ -168,10 +200,13 @@ export const postEdit = async (req, res) => {
         username,
         location,
     },
-    {new: true }
+    { new: true }
     );
+  
     req.session.user = updateUser;
+  
     return res.redirect("/users/edit");
-};
+   
+};//postedit 끝
 
 export const see = (req, res) => res.send("See User");
