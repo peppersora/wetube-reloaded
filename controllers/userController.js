@@ -209,4 +209,50 @@ export const postEdit = async (req, res) => {
    
 };//postedit 끝
 
+export const getChangePassword = (req,res) => {
+    // 깃헙으로 로그인한 사람은 비밀번호를 바꿀 수 없다..!
+    if(req.session.user.socialOnly === true){
+        return res.redirect("/");
+    }
+
+    return res.render("change-password", {pageTitle: "Change Password"})
+
+};
+export const postChangePassword = async(req,res) => {
+    const {
+        session:{
+            user: { _id,},
+        },
+        body :{oldPassword, newPassword, newPasswordConfirmation},
+    } = req;
+    const pageTitle = "Change Password";
+    // 이전비번과 현재비번
+    const user = await User.findById(_id);
+    const ok = bcrypt.compare(oldPassword, user.password);
+    if(!ok){
+        return res.status(400).render("change-password",{
+            pageTitle,
+            errorMessage: "The current password is incorrect",
+        });
+    }
+    // 새비밀번호와 비밀번호 확인
+    if(newPassword !== newPasswordConfirmation){
+        return res.status(400).render("change-password", {
+            //status : 브라우저는 비밀번호가 같은지 틀린지 인식못하기때문에 사용
+            pageTitle, 
+            errorMessage: "The password does not match the confirmation",
+        });
+    }
+    /* 3. 비밀번호를 변경해야한다.
+    입력받은 비밀번호를 hash화 시킬때 사용한 save 미들웨어를 사용하기 위해서 user를 먼저 찾아온다.*/
+    // const user = await User.findById(_id);
+    // console.log("Old password : " , user.password);
+    user.password = newPassword;
+    // 새로운 비번도 hash 화해야하니까...
+    // console.log("New unhashed pw : ", user.password);
+    await user.save();
+    // console.log("new pw ", user.password);
+    // send notification
+    return res.redirect("/users/logout");
+};
 export const see = (req, res) => res.send("See User");

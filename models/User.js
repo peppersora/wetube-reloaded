@@ -18,11 +18,12 @@ const userSchema = new mongoose.Schema({
 
 userSchema.pre('save',async function(){
     console.log("Users password : ", this.password);
-    this.password = await bcrypt.hash(this.password,5);
+    this.password = bcrypt.hash(this.password, 5);
     //this.password는 유저가 입력한 password!
     console.log("Hashed password", this.password);
     // 출력 결과: Hashed password $2b$05$kV/xhoZK0m90UCavbQPVOuVXnNEZPkRq3qTNTaIenwVL.HrMxepPe
 });
+
 
 const User = mongoose.model("User",userSchema);
 
