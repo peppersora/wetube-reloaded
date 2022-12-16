@@ -159,13 +159,13 @@ export const postEdit = async (req, res) => {
 
     const {
         session:{
-            user: { _id,},
+            user: { _id,avatarUrl},
         },
         body :{ name, email, username, location },
-        file
+        file,
     } = req;
     //req 끝
-    console.log(file);
+    // console.log(file);
     // email 확인
     const pageTitle = "Edit Profile";
 
@@ -196,6 +196,7 @@ export const postEdit = async (req, res) => {
     const updateUser = await User.findByIdAndUpdate( 
         _id , 
         {
+        avatarUrl: file ? file.path : avatarUrl,
         name,
         email,
         username,

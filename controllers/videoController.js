@@ -72,6 +72,8 @@ export const getUpload = (req,res) => {
 };
 
 export const postUpload = async (req,res) => {
+  const { path: fileUrl } = req.file;
+  // file 자체가 아니라 file의 경로를 원하니까...
   // here we will add a video to the videos array.
   const {title, description, hashtags} = req.body;
   // 이제 document를 만들어야하는데 document는 데이터를 가진 비디오
@@ -80,6 +82,7 @@ export const postUpload = async (req,res) => {
   await Video.create({
     title,
     description,
+    fileUrl,
     hashtags:Video.formathashtags(hashtags),
    
   });

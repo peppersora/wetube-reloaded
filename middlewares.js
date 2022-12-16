@@ -27,4 +27,17 @@ export const publicOnlyMiddleware = (req,res,next) =>{
     }
 };
 // 파일 업로드
-export const uploadFiles = multer({dest: "uploads/"})
+//  두개로 만들것(avatar, video용)
+export const avatarUpload = multer({
+    dest: "uploads/avatars/", 
+    limits: {
+        fileSize: 3000000,
+    },
+
+    });
+export const videoUpload = multer({
+    dest: "uploads/videos/",
+    limits: {
+        fileSize: 10000000,
+    },
+});
