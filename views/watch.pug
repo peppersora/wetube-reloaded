@@ -5,7 +5,14 @@ block content
     div 
         p=video.description
         small=video.createdAt
+        //- small=video.owner
+        //- br
+        //- small=loggedInUser._id
+    div 
+        small Uploaded By #{owner.name}    
+    if String(video.owner) === String(loggedInUser._id) 
     a(href=`${video.id}/edit`) Edit Video &rarr;
     br
     a(href=`${video.id}/delete`) Delete Video &rarr;
+    
     

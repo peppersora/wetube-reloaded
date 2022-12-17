@@ -257,4 +257,16 @@ export const postChangePassword = async(req,res) => {
     // send notification
     return res.redirect("/users/logout");
 };
-export const see = (req, res) => res.send("See User");
+export const see = async(req, res) =>{
+    //1.public 페이지이기때문에 session이 아니라 url에서 user id를 가져올것
+    const { id } = req.params;
+    const user = await User.findById(id);
+
+    if(!user){
+        return res.status(404).render("404", { pageTitle : "User not found."});
+    }
+
+    return res.render("profile",{
+        pageTitle: user.name+"의 Profile", 
+        user:user});
+ };

@@ -14,7 +14,10 @@ const VideoSchema = new mongoose.Schema({
     meta: {
         views:{type:Number,default:0,required: true},
         rating:{type:Number,default:0,required: true},
-    }
+
+    },
+    owner : { type:mongoose.Schema.Types.ObjectId , required: true, ref: "User"},
+    // ref: objectId가 User로부터 온다고 알려주는 속성
 });
 
 VideoSchema.static("formathashtags",function(hashtags){

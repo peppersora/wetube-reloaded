@@ -1,4 +1,5 @@
 import Video from "../models/Video";
+import User from "../models/User";
 
 /* 1. callback 방식
 console.log("start");
@@ -33,10 +34,11 @@ export const watch = async (req,res) => {
   //id가 req.params에서 오는것 정말정말 중요!!
   //req.param => router가 주는 express기능
   const video = await Video.findById(id);
+  const owner = await User.findById(video.owner);
   if(!video){
     return res.render("404",{pageTitle:"video not found."});
   }
-  return res.render("watch",{pageTitle: video.title, video});
+  return res.render("watch",{pageTitle: video.title, video, owner});
 };
 
 export const getEdit = async (req,res) => {
@@ -72,6 +74,9 @@ export const getUpload = (req,res) => {
 };
 
 export const postUpload = async (req,res) => {
+  const { 
+    user: _id 
+  } = req.session;
   const { path: fileUrl } = req.file;
   // file 자체가 아니라 file의 경로를 원하니까...
   // here we will add a video to the videos array.
@@ -83,6 +88,7 @@ export const postUpload = async (req,res) => {
     title,
     description,
     fileUrl,
+    owner: _id,
     hashtags:Video.formathashtags(hashtags),
    
   });
