@@ -33,12 +33,13 @@ export const watch = async (req,res) => {
   const {id} = req.params;
   //id가 req.params에서 오는것 정말정말 중요!!
   //req.param => router가 주는 express기능
-  const video = await Video.findById(id);
-  const owner = await User.findById(video.owner);
+  const video = await Video.findById(id).populate("owner");
+  // mongoose의 ref를 이용해, populate("owner")를 하면 owner object전체가 나온다
+  
   if(!video){
     return res.render("404",{pageTitle:"video not found."});
   }
-  return res.render("watch",{pageTitle: video.title, video, owner});
+  return res.render("watch",{pageTitle: video.title, video});
 };
 
 export const getEdit = async (req,res) => {

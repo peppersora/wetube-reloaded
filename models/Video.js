@@ -17,7 +17,7 @@ const VideoSchema = new mongoose.Schema({
 
     },
     owner : { type:mongoose.Schema.Types.ObjectId , required: true, ref: "User"},
-    // ref: objectId가 User로부터 온다고 알려주는 속성
+    // ref: objectId가 User로부터 온다고 알려주는 속성(reference)
 });
 
 VideoSchema.static("formathashtags",function(hashtags){
