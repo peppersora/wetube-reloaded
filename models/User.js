@@ -11,19 +11,22 @@ const userSchema = new mongoose.Schema({
     socialOnly: { type: Boolean, default: false},
     // socialOnly는 해당 계정을 password로 로그인할수 없다는것을알려주려 사용
     username: { type: String, required: true, unique: true},
-    password: { type: String, required: false},
-    name: { type: String},
+    password: { type: String},
+    name: { type: String, required: true},
     location: String,
     videos: [
         {type:mongoose.Schema.Types.ObjectId , ref: "Video"}
     ],
 });
 
-userSchema.pre('save',async function(){
-    console.log("Users password : ", this.password);
-    this.password = bcrypt.hash(this.password, 5);
-    //this.password는 유저가 입력한 password!
-    console.log("Hashed password", this.password);
+userSchema.pre("save",async function(){
+    // console.log("Users password : ", this.password);
+    if(this.isModified("password")){
+        this.password = bcrypt.hash(this.password, 5);
+
+    }
+    //this.password는 user가 입력한 password!
+    // console.log("Hashed password", this.password);
     // 출력 결과: Hashed password $2b$05$kV/xhoZK0m90UCavbQPVOuVXnNEZPkRq3qTNTaIenwVL.HrMxepPe
 });
 

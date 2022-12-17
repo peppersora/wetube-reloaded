@@ -45,27 +45,38 @@ export const watch = async (req,res) => {
 export const getEdit = async (req,res) => {
   // form을 화면에 보여주는 애
   const {id} = req.params;
+  const { 
+    user: {_id},
+  } = req.session;
   const video = await Video.findById(id);
   if(!video){
     // error를 먼저 체크할것
     return res.status(404).render("404",{pageTitle:"video not found."});
   }
+  // console.log(video.owner, _id);
+  if(String(video.owner) !== String(_id)){
+    return res.status(403).redirect("/");
+  }
   return res.render("edit",{pageTitle:`Edit: ${video.title}`, video});
 };
 export const postEdit = async (req,res) => {
-  // post는 변경사항을 저장해주는애
+  const { 
+    user: {_id},
+  } = req.session;
   const {id} = req.params;
   const {title,description, hashtags} = req.body;
   const video = await Video.exists({_id: id});
-  // exists는 filter를 필요로 한다.
-  if(!video){
-    return res.render("404",{pageTitle:"video not found."});
-  }
-  await Video.findByIdAndUpdate(id, {
+  const videoModified = await Video.findByIdAndUpdate(id,{
     title,
     description,
     hashtags:Video.formathashtags(hashtags),
   });
+  if(!video){
+    return res.render("404",{pageTitle:"video not found."});
+  }
+  if(String(videoModified.owner) !== String(video._id)){
+    return res.status(403).redirect("/");
+  }
   return res.redirect(`/videos/${id}`);
   // redirect는 브라우저가 자동으로 이동하는것
 };  
@@ -95,6 +106,7 @@ export const postUpload = async (req,res) => {
   });
   const user = await User.findById(_id);
   user.videos.push(newVideo._id);
+  // password 수정시에만 hash하기
   user.save();
   return res.redirect("/");
 } catch(error){
@@ -108,8 +120,18 @@ export const postUpload = async (req,res) => {
 
 export const deleteVideo = async(req,res) => {
   const {id} = req.params;
+  const { 
+    user: {_id},
+  } = req.session;
+  const video = await Video.findById(id);
+  if(!video){
+    return res.status(404).render("404",{pageTitle:"video not found."});
+  }
+  if(String(video.owner) !== String(_id)){
+    return res.status(403).redirect("/");
+  }
   await Video.findByIdAndDelete(id);
-  // delete video
+
   return res.redirect("/");
 }
 
