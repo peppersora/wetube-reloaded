@@ -4,6 +4,7 @@
 // webpack이 읽을 configuration 파일으 내보낼것임
 // console.log(__dirname); => 파일까지의 전체경로
 const path = require("path");
+
 // console.log(path.resolve(__dirname, "assets","js"));
 module.exports = {
     entry: "./client/js/main.js",
