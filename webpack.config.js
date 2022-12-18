@@ -3,15 +3,24 @@
 // 1. entry: 우리가 처리하고자하는 파일 =>main.js
 // webpack이 읽을 configuration 파일으 내보낼것임
 // console.log(__dirname); => 파일까지의 전체경로
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
 const path = require("path");
 
 // console.log(path.resolve(__dirname, "assets","js"));
 module.exports = {
     entry: "./client/js/main.js",
-    mode: 'development',
+    mode: "development",
+    watch: true,
+    plugins: [
+        new MiniCssExtractPlugin({
+            filename:"css/styles.css",
+        }),
+    ],
     output: {
-        filename: "main.js",
-        path: path.resolve(__dirname, "assets","js"),
+        filename: "js/main.js",
+        path: path.resolve(__dirname, "assets"),
+        clean: true,
     },
     module: {
         rules: [
@@ -26,7 +35,7 @@ module.exports = {
             }, 
             {
                 test: /\.scss/,
-                use:["style-loader", "css-loader", "sass-loader"],
+                use:[MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
             }         
         ],
     },
