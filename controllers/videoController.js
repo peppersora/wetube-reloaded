@@ -1,31 +1,13 @@
 import Video from "../models/Video";
 import User from "../models/User";
 
-/* 1. callback 방식
-console.log("start");
-Video.find({},(error,videos) =>{
-  중괄호는 search terms인데, 이것이 비어져있으면 모든 형식을
-  찾는다는것을 뜻한다.
-  if(error){
-    return res.render("server-error")
-  }
-    return res.render("home",{pageTitle:"Home", videos});
-});
-  console.log("finished!");
-*/
-// 2. promise 방식
 export const home = async (req,res) => {
-  
-    const videos = await Video.find({}).sort({createdAt:"desc"});
-    console.log(videos);
-    return res.render("home",{pageTitle:"Home", videos});
-    // return을 사용하는 진짜 이유는 function을 종료시켜주기때문
-  /* js가 위에서 아래로 단지 읽었다면, 
-    await을 사용하면 기다려준다. => 언제까지?
-    database에게 결과값을 받을 때까지...
-    async와 await은 callback보다 최신기술로
-    최대 장점은 직관적이라는것..!*/
+ 
+  const videos = await Video.find({})
+  .sort({ createdAt: "desc" })
+  .populate("owner");
 
+    return res.render("home",{pageTitle:"Home", videos});
 };
 
 export const watch = async (req,res) => {
@@ -142,8 +124,8 @@ export const search = async (req,res) => {
    videos =await Video.find({
     title: {
       $regex: new RegExp(`${keyword}`,"i"),
-    }
-   });
+    },
+  }).populate("owner");
   }
   return res.render("search",{pageTitle:"Search",videos});
 }

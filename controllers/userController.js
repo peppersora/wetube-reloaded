@@ -1,5 +1,4 @@
 import User from "../models/User";
-import Video from "../models/Video";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
 import { application } from "express";
@@ -261,7 +260,13 @@ export const postChangePassword = async(req,res) => {
 export const see = async(req, res) =>{
     //1.public 페이지이기때문에 session이 아니라 url에서 user id를 가져올것
     const { id } = req.params;
-    const user = await User.findById(id).populate("videos");
+    const user = await User.findById(id).populate({
+        path: "videos",
+        populate: {
+          path: "owner",
+          model: "User",
+        },
+      });
 
     if(!user){
         return res.status(404).render("404", { pageTitle : "User not found."});
