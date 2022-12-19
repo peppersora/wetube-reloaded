@@ -2,29 +2,45 @@ const video = document.querySelector("video");
 const playBtn = document.getElementById("play");
 const muteBtn = document.getElementById("mute");
 const time = document.getElementById("time");
-const volume = document.getElementById("volume");
+const volumeRange = document.getElementById("volume");
+
+let volumeValue = 0.5;
+video.volume=volumeValue;
 
 const handlePlayClick = (e) =>{
-    //if the video is playing,pause it!
-    //else play the video
-  
+
     if(video.paused){
         video.play();
     }else{
         video.pause();
     }
+    playBtn.innerText = video.paused ? "Play" : "Paused";
 }
 
-const handlePause =() =>{ playBtn.innerText="Play"};
-const handlePlay = () => {playBtn.innerText="Pause"};
 const handleMute =(e) =>{
-
-}
+    if(video.muted){
+        video.muted=false;
+    }else{
+        video.muted=true;
+    }
+    muteBtn.innerText= video.muted ? "Unmute" : "Mute";
+    volumeRange.value = video.muted ? 0 : volumeValue;
+};
 
 playBtn.addEventListener("click",handlePlayClick);
 muteBtn.addEventListener("click",handleMute);
-video.addEventListener("pause",handlePause);
-video.addEventListener("play",handlePlay);
-// text대신 function을 넣어주는것
 
+const handleVolumeChange = (event) =>{
+    const {
+        target: { value }, 
+    } = event;
+    if(video.muted){
+        video.muted = false;
+        video.innerText ="Mute";
+    }
+    volumeValue = value;
+        video.volume=value;
+    
+};
 
+volumeRange.addEventListener("input",handleVolumeChange);
