@@ -9,7 +9,11 @@ const path = require("path");
 
 // console.log(path.resolve(__dirname, "assets","js"));
 module.exports = {
-    entry: "./client/js/main.js",
+    entry: {
+        main:"./client/js/main.js",
+        videoPlayer: "./client/js/videoPlayer.js"
+
+    },
     mode: "development",
     watch: true,
     plugins: [
@@ -18,7 +22,7 @@ module.exports = {
         }),
     ],
     output: {
-        filename: "js/main.js",
+        filename: "js/[name].js",
         path: path.resolve(__dirname, "assets"),
         clean: true,
     },
