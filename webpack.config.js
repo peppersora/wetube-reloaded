@@ -11,8 +11,8 @@ const path = require("path");
 module.exports = {
     entry: {
         main:"./client/js/main.js",
-        videoPlayer: "./client/js/videoPlayer.js"
-
+        videoPlayer: "./client/js/videoPlayer.js",
+        recorder: "./client/js/recorder.js",
     },
     mode: "development",
     watch: true,
