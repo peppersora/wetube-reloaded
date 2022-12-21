@@ -6,6 +6,7 @@ const currenTime = document.getElementById("currenTime");
 const totalTime = document.getElementById("totalTime");
 const timeline = document.getElementById("timeline");
 const fullScreen = document.getElementById("fullScreen");
+const videoContainer = document.getElementById("videoContainer");
 const videoControls = document.getElementById("videoControls");
 
 let controlsTimeout = null;
@@ -23,7 +24,7 @@ const handlePlayClick = (e) =>{
     playBtn.innerText = video.paused ? "Play" : "Paused";
 }
 
-const handleMute =(e) =>{
+const handleMuteClick =(e) =>{
     if(video.muted){
         video.muted=false;
     }else{
@@ -78,39 +79,38 @@ const handlefullScreen = () =>{
     }
 };
 
-const hideControls =() =>  videoControls.classList.remove("showing");
+const hideControls =() => videoControls.classList.remove("showing");
 
-const handleMouseMove = () =>{
-    if(controlsTimeout){
-        clearTimeout(controlsTimeout);
-        controlsTimeout=null;
+const handleMouseMove = () => {
+    if (controlsTimeout) {
+      clearTimeout(controlsTimeout);
+      controlsTimeout = null;
     }
-    if(controlsMovementTimeout){
-        clearTimeout(controlsMovementTimeout);
-        controlsMovementTimeout = null;
+    if (controlsMovementTimeout) {
+      clearTimeout(controlsMovementTimeout);
+      controlsMovementTimeout = null;
     }
     videoControls.classList.add("showing");
+    controlsMovementTimeout = setTimeout(hideControls, 3000);
     //controlsMovementTimeout가 id일때
-    controlsMovementTimeout = setTimeout(hideControls,3000);
-};
+  };
 
 // 아래문장이 위의 한문장으로 대체가능!!
 const handleMouseLeave = () =>{
     controlsTimeout = setTimeout(() => {
         videoControls.classList.remove("showing");
     },3000);
-    
 };
 
 const handleEnded = () => {
     const { id } = videoContainer.dataset;
-    fetch(`/api/videos/{id}/view`,{
+    fetch(`/api/videos/${id}/view`,{
         method:"POST",
 });
 };
 
 playBtn.addEventListener("click",handlePlayClick);
-muteBtn.addEventListener("click",handleMute);
+muteBtn.addEventListener("click",handleMuteClick);
 volumeRange.addEventListener("input",handleVolumeChange);
 video.addEventListener("loadedmetadata",handleLoadedMetadata);
 video.addEventListener("timeupdate",handleTimeupdate);

@@ -134,11 +134,12 @@ export const registerView = async(req,res) =>{
   const { id } = req.params;
   const video = await Video.findById(id);
   if(!video){
-    return res.status(404);
+    return res.sendStatus(404);
   }
   //video가 있을경우 아를 업데이트 한다
   video.meta.views = video.meta.views +1;
   await video.save();
   // update가 ok 되었다는 뜻의 status(200)을 return
-  return res.status(200);
+  return res.sendStatus(200);
+  // status는 render하기 전의 상태를 
 };
