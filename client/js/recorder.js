@@ -6,13 +6,20 @@ const preview = document.getElementById("preview");
 //function은 외부에 있는 변수를 받을 수 있다.
 let stream;
 let recorder;
+let videoFile;
 
-const handleDownload = () => {};
+const handleDownload = () => {
+    const a = document.createElement("a");
+    a.href = videoFile;
+    a.download = "MyRecording.webem";
+    document.body.appendChild(a);
+    a.click();
+};
 
 const handleStop = () =>{
-    startBtn.innerText = "Start Recording";
-    startBtn.addEventListener("click",handleStart);
+    startBtn.innerText = "Download Recording";
     startBtn.removeEventListener("click",handleStop);
+    startBtn.addEventListener("click",handleDownload);
 
     recorder.stop();
 };
@@ -21,11 +28,11 @@ const handleStart = () => {
     startBtn.innerText = "Stop Recording";
     startBtn.removeEventListener("click",handleStart);
     startBtn.addEventListener("click",handleStop);
-    recorder = new MediaRecorder(stream);
+    recorder = new MediaRecorder(stream,{ mimeType: "video/webm" });
 
     recorder.ondataavailable = (event) =>{
         
-        const videoFile = URL.createObjectURL(event.data);
+        videoFile = URL.createObjectURL(event.data);
         preview.srcObject = null;
         preview.src = videoFile;
         preview.loop =true;
