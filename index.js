@@ -20,6 +20,11 @@ const logger = morgan("dev");
 app.set("view engine","pug");
 // pug를 view engine으로 설정을해야 html을 가져올수 있다.
 app.set("views", process.cwd() + "/views");
+app.use((req, res, next) => {
+    res.header("Cross-Origin-Embedder-Policy", "require-corp");
+    res.header("Cross-Origin-Opener-Policy", "same-origin");
+    next();
+    });
 app.use(logger);
 app.use(express.urlencoded({extended:true}));
 // session Middleware
