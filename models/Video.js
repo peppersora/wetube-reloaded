@@ -25,6 +25,10 @@ VideoSchema.static("formathashtags",function(hashtags){
     return hashtags.split(",").map((word) => (word.startsWith("#") ? word : `#${word}`))
 });
 
+// thumbnail 기능이 안됨..static이용해보기
+VideoSchema.static("changePathFormula",(urlPath) => {
+    return urlPath.replace(/\\/g, "/");
+    });
 
 
 const Video = mongoose.model("Video", VideoSchema);

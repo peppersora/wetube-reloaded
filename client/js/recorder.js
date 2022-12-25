@@ -66,13 +66,13 @@ const handleDownload = async() => {
 
 
 
-const handleStop = () =>{
-    startBtn.innerText = "Download Recording";
-    startBtn.removeEventListener("click",handleStop);
-    startBtn.addEventListener("click",handleDownload);
+// const handleStop = () =>{
+//     startBtn.innerText = "Download Recording";
+//     startBtn.removeEventListener("click",handleStop);
+//     startBtn.addEventListener("click",handleDownload);
 
-    recorder.stop();
-};// handlestop 끝
+//     recorder.stop();
+// };// handlestop 끝
 
 
 const handleStart = () => {
