@@ -59,6 +59,7 @@ export const postEdit = async (req,res) => {
   if(String(videoModified.owner) !== String(_id)){
     return res.status(403).redirect("/");
   }
+  req.flash("success", "Changes saved.");
   return res.redirect(`/videos/${id}`);
   // redirect는 브라우저가 자동으로 이동하는것
 };  
