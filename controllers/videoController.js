@@ -1,4 +1,5 @@
 import Video from "../models/Video";
+import Comment from "../models/Comment";
 import User from "../models/User";
 
 export const home = async (req,res) => {
@@ -145,4 +146,31 @@ export const registerView = async(req,res) =>{
   // update가 ok 되었다는 뜻의 status(200)을 return
   return res.sendStatus(200);
   // status는 render하기 전의 상태를 
+};
+
+export const createComment = async (req,res) => {
+ 
+  const {
+    session: {user},
+    body: {text},
+    params: {id},
+  } = req;
+
+  //mongo에 저장하기
+
+  const video = await Video.findById(id);
+  if(!video){
+    return res.sendStatus(404);
+    //sendstatus는 req를 보내버리고 끝
+  }
+  // video가 있다면 댓글을 달수 있으니까...
+  const comment = await Comment.create({
+    text,
+    owner: user._id,
+    video: id,
+  });
+
+
+  return res.sendStatus(201);
+  //201=> created!
 };
