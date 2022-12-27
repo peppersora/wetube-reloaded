@@ -1,13 +1,14 @@
 import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
-import { async } from "regenerator-runtime";
+
 // 먼저 버튼을 만들어서 유저가 누를수 있게하자
 const startBtn = document.getElementById("startBtn");
-const preview = document.getElementById("preview");
+const video = document.getElementById("preview");
 
 //function은 외부에 있는 변수를 받을 수 있다.
 let stream;
 let recorder;
 let videoFile;
+
 const files = {
     input: "recording.webm",
     output: "output.mp4",
@@ -76,21 +77,28 @@ const handleDownload = async() => {
 
 
 const handleStart = () => {
-    startBtn.innerText = "Stop Recording";
+    startBtn.innerText = "Recording";
+    startBtn.disabled = true;
     startBtn.removeEventListener("click",handleStart);
-    startBtn.addEventListener("click",handleStop);
+
     recorder = new MediaRecorder(stream,{ mimeType: "video/webm" });
 
     recorder.ondataavailable = (event) =>{
         
         videoFile = URL.createObjectURL(event.data);
-        preview.srcObject = null;
-        preview.src = videoFile;
-        preview.loop =true;
-        preview.play();
+        video.srcObject = null;
+        video.src = videoFile;
+        video.loop =true;
+        video.play();
+        startBtn.innerText = "Download";
+        startBtn.disabled = false;
+        startBtn.addEventListener("click", handleDownload);
     };
     
         recorder.start();
+        setTimeout(() => {
+            recorder.stop();
+          }, 5000);
        
 };// handlestart 끝
 
@@ -99,9 +107,9 @@ const init = async() => {
         audio:false,
         video:{width:200,height:100},
     });
-    preview.srcObject = stream;
+    video.srcObject = stream;
     // srcObject는 video가 가질수 있는 무언가
-    preview.play();
+    video.play();
 };// init 끝
 
 init();

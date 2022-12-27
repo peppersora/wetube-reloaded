@@ -3,7 +3,7 @@ const videoContainer = document.getElementById("videoContainer");
 const form = document.getElementById("commentForm");
 
 
-const handleSubmit = (event) => {
+const handleSubmit = async(event) => {
     // 브라우저가 원래하려는 동작을 막기위해 필요한 코드
     event.preventDefault();
     const textarea = form.querySelector("textarea");
@@ -13,10 +13,10 @@ const handleSubmit = (event) => {
     if( text === ""){
         return;
     }
-    fetch(`/api/videos/${videoId}/comment`,{
+    await fetch(`/api/videos/${videoId}/comment`,{
         method:"POST",
         headers: {
-            "Content-type": "application/json",
+            "Content-Type": "application/json",
         },
         body : JSON.stringify({ text }),
     });

@@ -16,7 +16,7 @@ export const watch = async (req,res) => {
   const {id} = req.params;
   //id가 req.params에서 오는것 정말정말 중요!!
   //req.param => router가 주는 express기능
-  const video = await Video.findById(id).populate("owner");
+  const video = await Video.findById(id).populate("owner").populate("comments");
   // mongoose의 ref를 이용해, populate("owner")를 하면 owner object전체가 나온다
   
   if(!video){
@@ -84,7 +84,7 @@ export const postUpload = async (req,res) => {
   const newVideo =  await Video.create({
     title,
     description,
-    fileUrl: video[0].path,
+    fileUrl:Video.changePathFormula(video[0].path),
     thumbUrl:Video.changePathFormula(video[0].path),
     owner: _id,
     hashtags:Video.formathashtags(hashtags),
@@ -170,7 +170,8 @@ export const createComment = async (req,res) => {
     video: id,
   });
 
-
+  video.comments.push(comment._id);
+  video.save();
   return res.sendStatus(201);
   //201=> created!
 };
