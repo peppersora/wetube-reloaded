@@ -74,7 +74,8 @@ export const postUpload = async (req,res) => {
     user: _id 
   } = req.session;
   //console.log(req.files); =>video,thumb
-  const {video,thumb } = req.files;
+  const {video,thumb } = req.files.thumb;
+  console.log(thumb);
   // file 자체가 아니라 file의 경로를 원하니까...
   // here we will add a video to the videos array.
   const {title, description, hashtags} = req.body;
