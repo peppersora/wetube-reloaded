@@ -74,8 +74,7 @@ export const postUpload = async (req,res) => {
     user: _id 
   } = req.session;
   //console.log(req.files); =>video,thumb
-  const {video,thumb } = req.files.thumb;
-  console.log(thumb);
+  const {video,thumb } = req.files;
   // file 자체가 아니라 file의 경로를 원하니까...
   // here we will add a video to the videos array.
   const {title, description, hashtags} = req.body;
@@ -85,7 +84,7 @@ export const postUpload = async (req,res) => {
   const newVideo =  await Video.create({
     title,
     description,
-    fileUrl:Video.changePathFormula(video[0].path),
+    fileUrl: Video.changePathFormula(video[0].path),
     thumbUrl:Video.changePathFormula(video[0].path),
     owner: _id,
     hashtags:Video.formathashtags(hashtags),
@@ -173,6 +172,6 @@ export const createComment = async (req,res) => {
 
   video.comments.push(comment._id);
   video.save();
-  return res.sendStatus(201);
+  return res.status(201).json({ newCommentID: comment._id});
   //201=> created!
 };
